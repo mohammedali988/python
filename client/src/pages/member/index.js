@@ -1,5 +1,12 @@
 import React from 'react';
-import { Box, Grid, Paper, TextField, Button } from '@mui/material';
+import {
+  Box,
+  Grid,
+  Paper,
+  TextField,
+  Button,
+  TextareaAutosize,
+} from '@mui/material';
 import { makeStyles } from '@mui/styles';
 
 const useStyles = makeStyles({
@@ -19,8 +26,8 @@ const useStyles = makeStyles({
   div: {
     margin: 20,
     marginLeft: '110px',
-    width: '90%',
-    height: '345px',
+    width: '80%',
+    height: '270px',
     border: '1px solid black',
     borderRadius: '8px',
   },
@@ -29,6 +36,16 @@ const useStyles = makeStyles({
     marginLeft: '110px !important',
     height: '50px',
     width: '120px',
+  },
+  textArea: {
+    width: '500px',
+    margin: '20px',
+  },
+  label: {
+    display: 'block',
+    margin: '10px 0',
+    color: 'green',
+    fontSize: '14px',
   },
 });
 
@@ -97,7 +114,10 @@ const Member = () => {
                 chose File
               </Button>
             </Grid>
-            <Grid item xs={6}></Grid>
+            <Grid item xs={6}>
+              <label className={classes.label}>Note </label>
+              <TextareaAutosize className={classes.textArea} minRows={6} />
+            </Grid>
           </Grid>
         </Paper>
       </Box>
