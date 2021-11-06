@@ -11,6 +11,7 @@ import { makeStyles } from '@mui/styles';
 import { useState } from 'react';
 import GoogleIcon from '@mui/icons-material/Google';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import axios from 'axios';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -44,16 +45,29 @@ const useStyles = makeStyles((theme) => ({
 const LogIn = () => {
   const classes = useStyles();
   const [email, setEmail] = useState('');
-  const [pass, setPass] = useState('');
+  const [password, setPassword] = useState('');
+
+  const hundleChange = (e) => {
+    setEmail(e.target.value);
+  };
 
   const hundleSubmit = (e) => {
     e.preventDefault();
-    window.location.href = '/allMembers';
-    // const user = {
-    //   email: email,
-    //   pass: pass,
-    // };
-    // axios.post('', user);
+
+    console.log(email);
+    const user = {
+      email: email,
+      password: password,
+    };
+    axios
+      .post('http://localhost:8000/task/logIn', user)
+      .then((res) => {
+        if (res.data.jwt) {
+          localStorage.setItem('user', res.data.jwt);
+          window.location.href = '/allMembers';
+        }
+      })
+      .catch((err) => console.log(err));
   };
 
   return (
@@ -91,7 +105,7 @@ const LogIn = () => {
               label="email adress"
               className={classes.textField}
               variant="outlined"
-              onChange={(e) => setEmail(e.target.value)}
+              onChange={hundleChange}
             />
             <TextField
               fullWidth
@@ -100,7 +114,7 @@ const LogIn = () => {
               type="password"
               className={classes.textField}
               variant="outlined"
-              onChange={(e) => setPass(e.target.value)}
+              onChange={(e) => setPassword(e.target.value)}
             />
             <Button
               fullWidth

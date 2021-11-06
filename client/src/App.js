@@ -5,16 +5,23 @@ import AllMembers from './pages/allMembers';
 import { BrowserRouter as Router, Switch } from 'react-router-dom';
 import { CssBaseline } from '@mui/material';
 
+console.log(document.cookie, 'hiiiiiiiii');
+const user = localStorage.getItem('user');
+
 function App() {
   return (
     <>
       <CssBaseline />
       <Router>
-        <Switch>
-          <LogIn exact path="/logIn" />
-          <Member exact path="/member" />
-          <AllMembers exact path="/allMembers" />
-        </Switch>
+        {!user ? (
+          <LogIn exact path="/" />
+        ) : (
+          <Switch>
+            <LogIn exact path="/" />
+            <Member exact path="/member" />
+            <AllMembers exact path="/allMembers" />
+          </Switch>
+        )}
       </Router>
     </>
   );
