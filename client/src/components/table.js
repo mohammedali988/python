@@ -29,57 +29,38 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   },
 }));
 
-function createData(id, status, firstName, lastName, country, gender, notes) {
-  return { id, status, firstName, lastName, country, gender, notes };
+function createData(
+  idMember,
+  status,
+  firstName,
+  lastName,
+  country,
+  gender,
+  notes
+) {
+  return { idMember, status, firstName, lastName, country, gender, notes };
 }
 
-const rows = [
-  createData(
-    1,
-    <Checkbox />,
-    'mohammed',
-    'ali',
-    'country',
-    'male',
-    'Any thing if it is exist'
-  ),
-  createData(
-    2,
-    <Checkbox />,
-    'mohammed',
-    'sami',
-    'country',
-    'male',
-    'Any thing if it is exist'
-  ),
-  createData(
-    3,
-    <Checkbox />,
-    'mohammed',
-    'ahmed',
-    'country',
-    'male',
-    'Any thing if it is exist'
-  ),
-  createData(
-    4,
-    <Checkbox />,
-    'mohammed',
-    'jaber',
-    'country',
-    'male',
-    'Any thing if it is exist'
-  ),
-  createData(5, <Checkbox />, 'mohammed', 'memo', 'country', 'male', ''),
-];
-
-const Tables = () => {
+const Tables = (props) => {
+  const data = props.data;
+  console.log(data, 'hiiiiiiiiiiiiiiiiiiii');
+  const rows = data.map((e) => {
+    return createData(
+      e.id,
+      <Checkbox defaultChecked={e.active} />,
+      e.firstName,
+      e.lastName,
+      e.country,
+      e.gender,
+      e.notes
+    );
+  });
   return (
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 700 }} aria-label="customized table">
         <TableHead>
           <TableRow>
-            <StyledTableCell>id</StyledTableCell>
+            <StyledTableCell align="center">id Member</StyledTableCell>
             <StyledTableCell align="center">status</StyledTableCell>
             <StyledTableCell align="center">firstName</StyledTableCell>
             <StyledTableCell align="center">lastName</StyledTableCell>
@@ -90,9 +71,9 @@ const Tables = () => {
         </TableHead>
         <TableBody>
           {rows.map((row) => (
-            <StyledTableRow key={row.id}>
-              <StyledTableCell component="th" scope="row">
-                {row.id}
+            <StyledTableRow key={row.idMember}>
+              <StyledTableCell component="th" scope="row" align="center">
+                {row.idMember}
               </StyledTableCell>
               <StyledTableCell align="center">{row.status}</StyledTableCell>
               <StyledTableCell align="center">{row.firstName}</StyledTableCell>
@@ -109,3 +90,43 @@ const Tables = () => {
 };
 
 export default Tables;
+
+// const rows = [
+//   createData(
+//     1,
+//     <Checkbox />,
+//     'mohammed',
+//     'ali',
+//     'country',
+//     'male',
+//     'Any thing if it is exist'
+//   ),
+//   createData(
+//     2,
+//     <Checkbox />,
+//     'mohammed',
+//     'sami',
+//     'country',
+//     'male',
+//     'Any thing if it is exist'
+//   ),
+//   createData(
+//     3,
+//     <Checkbox />,
+//     'mohammed',
+//     'ahmed',
+//     'country',
+//     'male',
+//     'Any thing if it is exist'
+//   ),
+//   createData(
+//     4,
+//     <Checkbox />,
+//     'mohammed',
+//     'jaber',
+//     'country',
+//     'male',
+//     'Any thing if it is exist'
+//   ),
+//   createData(5, <Checkbox />, 'mohammed', 'memo', 'country', 'male', ''),
+// ];

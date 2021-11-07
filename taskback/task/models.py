@@ -30,6 +30,7 @@ class Member(models.Model):
     dateOfBirth = models.DateField(max_length=225)
     phoneNo = models.IntegerField()
     emailAddress = models.CharField(max_length=255)
+    image = models.ImageField(null=True)
     notes = models.TextField()
     active = models.BooleanField(default=False)
     country = models.ForeignKey(Country, on_delete=models.CASCADE)

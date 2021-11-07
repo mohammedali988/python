@@ -1,11 +1,11 @@
-from django.shortcuts import render
+from django.shortcuts import get_object_or_404, render
 from rest_framework.exceptions import AuthenticationFailed
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from .serializers import AddMemberSerializer, CitySerializer, CountrySerializer, UserSerializer
 import jwt
 import datetime
-from .models import City, Country, User
+from .models import City, Country, Member, User
 
 # Create your views here.
 
@@ -55,7 +55,7 @@ class addCountry(APIView):
         return Response(serializer.data)
 
     def get(self, request):
-        countries = Country.objects.all().values('id', 'name')
+        countries = Country.objects.all().values_list('id', 'name')
         return Response(countries)
 
 
@@ -66,12 +66,17 @@ class addCity(APIView):
         serializer.save()
         return Response(serializer.data)
 
-    def get(self, request):
-        citeis = City.objects.filter(country=1).values_list('name')
+
+class city(APIView):
+
+    def get(self, request, id):
+        exact = get_object_or_404(City, id=id)
+        print(id, "hereeeeeeeeeeeeeee")
+        citeis = City.objects.filter(country=id).values_list('id', 'name')
         city = []
         for x in citeis:
             city.append(x[0])
-        return Response(city)
+        return Response(citeis)
 
 
 class AddMember(APIView):
@@ -80,3 +85,8 @@ class AddMember(APIView):
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(serializer.data)
+
+    def get(self, request):
+        members = Member.objects.all().values('id', 'firstName', 'lastName',
+                                              'gender', 'country', 'notes', 'active')
+        return Response(members)
