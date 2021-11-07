@@ -82,6 +82,7 @@ class city(APIView):
 class AddMember(APIView):
     def post(self, request):
         serializer = AddMemberSerializer(data=request.data)
+        print(serializer, "hereeeeeeeeeeeeee")
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(serializer.data)

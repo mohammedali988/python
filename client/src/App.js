@@ -5,7 +5,6 @@ import AllMembers from './pages/allMembers';
 import { BrowserRouter as Router, Switch } from 'react-router-dom';
 import { CssBaseline } from '@mui/material';
 
-console.log(document.cookie, 'hiiiiiiiii');
 const user = localStorage.getItem('user');
 
 function App() {

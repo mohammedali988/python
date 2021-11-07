@@ -12,7 +12,7 @@ const AllMembers = () => {
 
   useEffect(() => {
     axios
-      .get('http://localhost:8000/task/addMember')
+      .get('http://localhost:8000/task/Member')
       .then((res) => setData(res.data))
       .catch((err) => console.log(err));
   }, []);

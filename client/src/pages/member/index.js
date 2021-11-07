@@ -23,6 +23,7 @@ import DesktopDatePicker from '@mui/lab/DesktopDatePicker';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import { useState } from 'react';
 import useStyles from './style';
+import { Link } from 'react-router-dom';
 import axios from 'axios';
 
 const Member = () => {
@@ -39,8 +40,7 @@ const Member = () => {
   const [email, setEmail] = useState('');
   const [notes, setNotes] = useState('');
   const [active, setActive] = useState('');
-  const [dateOfBirth, setdateOfBirth] = useState('');
-  const [value, setValue] = useState(new Date('2014-08-18T21:11:54'));
+  const [dateOfBirth, setDateOfBirth] = useState(new Date('2014-08-18'));
 
   const hundleChange = (e) => {
     setSelectedCountry(e.target.value);
@@ -56,9 +56,29 @@ const Member = () => {
       .then((res) => setCountry(res.data))
       .catch((err) => console.log(err));
   }, []);
+
+  const hundleSubmit = (e) => {
+    e.preventDefault();
+    const member = {
+      firstName: firstName,
+      lastName: lastName,
+      gender: gender,
+      dateOfBirth: dateOfBirth,
+      phoneNo: phoneNo,
+      emailAddress: email,
+      notes: notes,
+      active: active,
+      country: selectedCountry,
+      city: selectedCity,
+    };
+    axios
+      .post('http://localhost:8000/task/Member', member)
+      .then((res) => console.log(res.data))
+      .catch((err) => console.log(err));
+  };
   return (
     <>
-      <form>
+      <form onSubmit={hundleSubmit}>
         <Box className={classes.box}>
           <Paper className={classes.paper}>
             <Grid container spacing={8}>
@@ -146,10 +166,12 @@ const Member = () => {
                   <LocalizationProvider dateAdapter={AdapterDateFns}>
                     <Stack spacing={3}>
                       <DesktopDatePicker
-                        label="Date desktop"
+                        label="Birth date"
                         inputFormat="MM/dd/yyyy"
-                        value={value}
-                        onChange={(e) => console.log(e.target.value)}
+                        value={dateOfBirth}
+                        onChange={(newValue) => {
+                          console.log(newValue);
+                        }}
                         renderInput={(params) => <TextField {...params} />}
                       />
                     </Stack>
@@ -162,6 +184,7 @@ const Member = () => {
                   label="Email Address"
                   size="small"
                   className={classes.TextField}
+                  onChange={(e) => setEmail(e.target.value)}
                 />
               </Grid>
               <Grid item xs={4}>
@@ -183,23 +206,36 @@ const Member = () => {
             <Grid container spacing={8}>
               <Grid item xs={6}>
                 <label className={classes.label}> Note: </label>
-                <TextareaAutosize minRows={6} className={classes.area} />
+                <TextareaAutosize
+                  minRows={6}
+                  className={classes.area}
+                  onChange={(e) => setNotes(e.target.value)}
+                />
                 <br />
                 <label className={classes.label}> Member Status </label>
-                <Checkbox className={classes.check} />
+                <Checkbox
+                  className={classes.check}
+                  onChange={(e) => setActive(e.target.checked)}
+                />
               </Grid>
             </Grid>
             <Grid container>
               <Grid item xs={2}>
-                <Button variant="outlined" className={classes.btn1}>
+                <Button
+                  variant="outlined"
+                  className={classes.btn1}
+                  type="submit"
+                >
                   {' '}
                   save{' '}
                 </Button>
               </Grid>
               <Grid item xs={2}>
-                <Button variant="outlined" className={classes.btn1}>
-                  View All Member
-                </Button>
+                <Link to="/allMembers" style={{ textDecoration: 'none' }}>
+                  <Button variant="outlined" className={classes.btn1}>
+                    View All Member
+                  </Button>
+                </Link>
               </Grid>
             </Grid>
           </Paper>
