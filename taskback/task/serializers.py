@@ -34,4 +34,4 @@ class AddMemberSerializer(serializers.ModelSerializer):
     class Meta:
         model = Member
         fields = ['id', 'firstName', 'lastName', 'gender', 'dateOfBirth',
-                  'phoneNo', 'emailAddress', 'notes', 'active', 'country', 'city']
+                  'phoneNo', 'emailAddress', 'notes', 'active', 'country', 'city', 'image']

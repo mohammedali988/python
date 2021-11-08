@@ -23,14 +23,18 @@ class City(models.Model):
     name = models.CharField(max_length=225)
 
 
+def upload_path(instance, filename):
+    return '/'.join(['profileImage', str(instance.firstName), filename])
+
+
 class Member(models.Model):
     firstName = models.CharField(max_length=225)
     lastName = models.CharField(max_length=225)
     gender = models.CharField(max_length=225)
-    dateOfBirth = models.DateField(max_length=225)
+    dateOfBirth = models.CharField(max_length=225)
     phoneNo = models.IntegerField()
     emailAddress = models.CharField(max_length=255)
-    image = models.ImageField(null=True)
+    image = models.ImageField(null=True, upload_to=upload_path)
     notes = models.TextField()
     active = models.BooleanField(default=False)
     country = models.ForeignKey(Country, on_delete=models.CASCADE)

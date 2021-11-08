@@ -39,8 +39,10 @@ const Member = () => {
   const [phoneNo, setPhoneNo] = useState(0);
   const [email, setEmail] = useState('');
   const [notes, setNotes] = useState('');
-  const [active, setActive] = useState('');
-  const [dateOfBirth, setDateOfBirth] = useState(new Date('2014-08-18'));
+  const [active, setActive] = useState(false);
+  const [dateOfBirth, setDateOfBirth] = useState(
+    new Date('2014-08-18T21:11:54')
+  );
 
   const hundleChange = (e) => {
     setSelectedCountry(e.target.value);
@@ -59,6 +61,19 @@ const Member = () => {
 
   const hundleSubmit = (e) => {
     e.preventDefault();
+    const memberData = new FormData();
+    memberData.append('firstName', firstName);
+    memberData.append('lastName', lastName);
+    memberData.append('gender', gender);
+    memberData.append('dateOfBirth', dateOfBirth);
+    memberData.append('phoneNo', phoneNo);
+    memberData.append('notes', notes);
+    memberData.append('active', active);
+    memberData.append('email', email);
+    memberData.append('image', src);
+    memberData.append('country', selectedCountry);
+    memberData.append('city', selectedCity);
+
     const member = {
       firstName: firstName,
       lastName: lastName,
@@ -68,13 +83,21 @@ const Member = () => {
       emailAddress: email,
       notes: notes,
       active: active,
+      image: src,
       country: selectedCountry,
       city: selectedCity,
     };
+
     axios
-      .post('http://localhost:8000/task/Member', member)
-      .then((res) => console.log(res.data))
-      .catch((err) => console.log(err));
+      .post('http://localhost:8000/task/Member', memberData)
+      .then((res) => {
+        window.location.href = '/member';
+        console.log(res.data);
+      })
+      .catch((err) => {
+        console.log(memberData, 'hiiiiiiiii');
+        console.log(err);
+      });
   };
   return (
     <>
@@ -170,7 +193,7 @@ const Member = () => {
                         inputFormat="MM/dd/yyyy"
                         value={dateOfBirth}
                         onChange={(newValue) => {
-                          console.log(newValue);
+                          setDateOfBirth(newValue);
                         }}
                         renderInput={(params) => <TextField {...params} />}
                       />
@@ -189,13 +212,13 @@ const Member = () => {
               </Grid>
               <Grid item xs={4}>
                 <div className={classes.div}>
-                  <img src={src} />
+                  <img src={src} alt="photo" />
                 </div>
                 <input
                   type="file"
                   id="myfile"
                   name="myfile"
-                  onChange={(e) => setSrc(e.target.value)}
+                  onChange={(e) => setSrc(e.target.files[0])}
                 />
                 {/* <Button type="file" variant="outlined" className={classes.btn}>
                 chose File
