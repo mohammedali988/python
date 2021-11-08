@@ -59,6 +59,21 @@ const useStyles = makeStyles({
     height: '50px',
     width: '80%',
   },
+  img: {
+    height: '100%',
+    width: '100%',
+    objectFit: 'fill',
+    backgroundAttachment: 'fixed',
+  },
+  input: {
+    height: '100px',
+    width: '100px',
+    marginLeft: '110px',
+  },
+  fix: {
+    height: '100%',
+    width: '100%',
+  },
 });
 
 export default useStyles;

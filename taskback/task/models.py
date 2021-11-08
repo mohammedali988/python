@@ -28,17 +28,18 @@ def upload_path(instance, filename):
 
 
 class Member(models.Model):
-    firstName = models.CharField(max_length=225)
-    lastName = models.CharField(max_length=225)
-    gender = models.CharField(max_length=225)
-    dateOfBirth = models.CharField(max_length=225)
-    phoneNo = models.IntegerField()
-    emailAddress = models.CharField(max_length=255)
-    image = models.ImageField(null=True, upload_to=upload_path)
-    notes = models.TextField()
+    firstName = models.CharField(max_length=225, default=None)
+    lastName = models.CharField(max_length=225, default=None)
+    gender = models.CharField(max_length=225, default=None)
+    dateOfBirth = models.CharField(max_length=225, default=None)
+    phoneNo = models.IntegerField(default=None)
+    emailAddress = models.CharField(max_length=255, default=None)
+    image = models.ImageField(null=True, upload_to=upload_path, default=None)
+    notes = models.TextField(default=None)
     active = models.BooleanField(default=False)
-    country = models.ForeignKey(Country, on_delete=models.CASCADE)
-    city = models.ForeignKey(City, on_delete=models.CASCADE)
+    country = models.ForeignKey(
+        Country, default=None, on_delete=models.CASCADE)
+    city = models.ForeignKey(City, default=None, on_delete=models.CASCADE)
 
 
 # Create your models here.

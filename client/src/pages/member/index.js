@@ -29,6 +29,7 @@ import axios from 'axios';
 const Member = () => {
   const classes = useStyles();
   const [src, setSrc] = useState('');
+  const [renderImage, setRenderImage] = useState('');
   const [country, setCountry] = useState([]);
   const [selectedCountry, setSelectedCountry] = useState('');
   const [city, setCity] = useState([]);
@@ -44,6 +45,17 @@ const Member = () => {
     new Date('2014-08-18T21:11:54')
   );
 
+  const handleImgeChange = (event) => {
+    let files = event.target.files;
+    let reader = new FileReader();
+    reader.readAsDataURL(files[0]);
+    setSrc(event.target.files[0]);
+
+    reader.onload = (e) => {
+      setRenderImage(e.target.result);
+      console.log(e.target.result);
+    };
+  };
   const hundleChange = (e) => {
     setSelectedCountry(e.target.value);
     axios
@@ -69,29 +81,16 @@ const Member = () => {
     memberData.append('phoneNo', phoneNo);
     memberData.append('notes', notes);
     memberData.append('active', active);
-    memberData.append('email', email);
+    memberData.append('emailAddress', email);
     memberData.append('image', src);
     memberData.append('country', selectedCountry);
     memberData.append('city', selectedCity);
-
-    const member = {
-      firstName: firstName,
-      lastName: lastName,
-      gender: gender,
-      dateOfBirth: dateOfBirth,
-      phoneNo: phoneNo,
-      emailAddress: email,
-      notes: notes,
-      active: active,
-      image: src,
-      country: selectedCountry,
-      city: selectedCity,
-    };
 
     axios
       .post('http://localhost:8000/task/Member', memberData)
       .then((res) => {
         window.location.href = '/member';
+        setSrc(res.data.image);
         console.log(res.data);
       })
       .catch((err) => {
@@ -212,18 +211,17 @@ const Member = () => {
               </Grid>
               <Grid item xs={4}>
                 <div className={classes.div}>
-                  <img src={src} alt="photo" />
+                  <img src={renderImage} alt="photo" className={classes.img} />
                 </div>
-                <input
-                  type="file"
-                  id="myfile"
-                  name="myfile"
-                  onChange={(e) => setSrc(e.target.files[0])}
-                />
-                {/* <Button type="file" variant="outlined" className={classes.btn}>
-                chose File
-              </Button> */}
-                <Typography className={classes.typo}>name of file</Typography>
+                <div className={classes.input}>
+                  <input
+                    type="file"
+                    id="myfile"
+                    name="myfile"
+                    onChange={handleImgeChange}
+                    className={classes.fix}
+                  />
+                </div>
               </Grid>
             </Grid>
             <Grid container spacing={8}>

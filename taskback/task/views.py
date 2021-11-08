@@ -38,7 +38,6 @@ class logIn(APIView):
 
         token = jwt.encode(payload, 'secret', algorithm="HS256")
         response = Response()
-        # response.set_cookie(key='jwt', value=token)
         response.data = {
             'jwt': token
         }
@@ -83,34 +82,15 @@ class AddMember(APIView):
     serializer_class = AddMemberSerializer
 
     def post(self, request, *args, **kwargs):
-        print(request.data, "hiiiiiii")
-        firstName = request.data['firstName']
-        lastName = request.data['lastName']
-        gender = request.data['gender']
-        dateOfBirth = request.data['dateOfBirth']
-        phoneNo = request.data['phoneNo']
-        emailAddress = request.data['emailAddress']
-        image = request.data['image']
-        notes = request.data['notes']
-        print(request.data['country'], 'hereeeeeeeeeeeeee')
 
-        country = setattr(Member, 'country', request.data['country'])
-        # print(type(int(country)), "hiiiiiiiii")
-        city = setattr(Member, 'city', request.data['city'])
-        active = request.data['active']
-        Member.objects.create(
-            firstName=firstName, lastName=lastName, gender=gender,
-            dateOfBirth=dateOfBirth, phoneNo=phoneNo, emailAddress=emailAddress,
-            image=image, notes=notes, country=country, city=city, active=active)
+        serializer = AddMemberSerializer(data=request.data)
+        print(serializer, "hereeeeeeeeeeeeee")
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
 
-        return Response({'message': "Member Adedd"})
+        return Response(serializer.data)
 
     def get(self, request):
         members = Member.objects.all().values('id', 'firstName', 'lastName',
                                               'gender', 'country', 'notes', 'active')
         return Response(members)
-
-        # serializer = AddMemberSerializer(data=request.data)
-        # print(serializer, "hereeeeeeeeeeeeee")
-        # serializer.is_valid(raise_exception=True)
-        # serializer.save()
